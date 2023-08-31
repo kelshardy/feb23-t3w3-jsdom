@@ -14,12 +14,15 @@ let favouriteMedia = [
 ];
 
 function exampleHello(){
-    console.log("hello worlld");
+    console.log("hello world");
 }
 
 function createListOfMedia(){
 
     let rootUlNode = document.querySelector("ul");
+    
+    rootUlNode.innerHTML = "";
+    
     // let exampleNode = document.getElementsByClassName("bananas")[0];
     // let exampleNode = document.getElementById("mediaList");
 
@@ -50,8 +53,44 @@ function createListOfMedia(){
 }
 
 function removeItemFromList(targetItem){
-    let targetItemNode = document.getElementById(targetItem);
-    if (targetItemNode){
-        targetItemNode.parentNode.removeChild(targetItemNode);
-    }
+	let targetItemNode = document.getElementById(targetItem);
+	if (targetItemNode){
+		//targetItemNode.parentNode.removeChild(targetItemNode);
+
+		// Modify the array
+		favouriteMedia = favouriteMedia.filter(item => {
+			if (!item || item == "" || item !== targetItem) {
+				return true;
+			} else {
+				return false
+			}
+		});
+
+		// Regenerate the visuals
+		createListOfMedia();
+	}
 }
+
+function addItemToList(event){
+	event.preventDefault();
+	console.log("we tried to add an item to the list!");
+
+	let realInputField = document.getElementById("real-nameinput");
+	let newItemName = realInputField.value;
+	if (newItemName){
+		console.log("newItemName is: " + newItemName);
+		// add item to list
+		favouriteMedia.push(newItemName);
+	
+		// generate a new list 
+		createListOfMedia();
+	} else {
+		console.warn("Attempted to add an empty item to the list");
+        console.error("Example error");
+	}
+}
+
+let realFormSubmitButton = document.getElementById("real-formsubmit");
+realFormSubmitButton.addEventListener("click", addItemToList);
+// functionName() runs immediately, do not want!
+// realFormSubmitButton.addEventListener("click", addItemToList());
